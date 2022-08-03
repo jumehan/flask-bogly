@@ -68,7 +68,7 @@ def process_new_user():
 # Show information about the given user.
 
 
-@app.get('/user/<int:user_id>')
+@app.get('/users/<int:user_id>')
 def show_user_detail(user_id):
     """Show information about the given user."""
     # Have a button to get to their edit page, and to delete the user.
@@ -93,16 +93,34 @@ def edit_user(user_id):
 # POST /users/[user-id]/edit
 # Process the edit form, returning the user to the /users page.
 
-app.post('/users/<int:user_id>/edit')
-
-
+@app.post('/users/<int:user_id>/edit')
 def process_edit_form(user_id):
     """Process the edit form, returning the user to the /users page."""
 
-    # if type is submit process edit
+    user = User.query.get_or_404(user_id)
 
-    # else go back to users page
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    image_url = request.form['image_url']
+
+    #  validate inputs before submit
+    user.first_name = first_name
+    user.last_name= last_name
+    user.image_url= image_url
+
+    db.session.commit()
+
+    return redirect('/users')
 
 
-# POST /users/[user-id]/delete
-# Delete the user.
+@app.post('/users/<int:user_id>/delete')
+def delete_user(user_id):
+    """Delete the user"""
+
+    user = User.query.get_or_404(user_id)
+
+    user.query.delete()
+    db.session.commit()
+
+    return redirect('/users')
+
