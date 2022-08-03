@@ -6,22 +6,18 @@
 
 <h1> {{user.first_name}} {{user.last_name}}</h1>
 
-<img src="{{user.url}}" alt="">
+<img src="{{user.image_url}}" alt="">
 
 
-<form action="/edit" method="post">
+<form>
 
 
-  <button>Edit</button>
+  <button formaction="/users/{{user.id}}/edit" formmethod="post">Edit</button>
 
-</form>
-
-<form action="/delete" method="post">
-
-
-  <button>Delete</button>
+  <button formaction="/users/{{user.id}}/delete" formmethod="post">Delete</button>
 
 </form>
+
 
 
 

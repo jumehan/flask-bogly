@@ -45,12 +45,12 @@ def show_add_form():
     return render_template('new_user.html')
 
 # POST /users/new
-# Process the add form, adding a new user and going back to /users
+#
 
 
 @app.post('/users/new')
 def process_new_user():
-
+    """Process the add form, adding a new user and going back to /users"""
     first_name = request.form['first_name']
     last_name = request.form['last_name']
     image_url = request.form['image_url']
@@ -62,19 +62,47 @@ def process_new_user():
     db.session.add(user)
     db.session.commit()
 
-    return redirect('users')
+    return redirect('/users')
 
 # GET /users/[user-id]
 # Show information about the given user.
 
-# Have a button to get to their edit page, and to delete the user.
+
+@app.get('/user/<int:user_id>')
+def show_user_detail(user_id):
+    """Show information about the given user."""
+    # Have a button to get to their edit page, and to delete the user.
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template('user_detail.html', user=user)
+
 
 # GET /users/[user-id]/edit
 # Show the edit page for a user.
-
 # Have a cancel button that returns to the detail page for a user, and a save button that updates the user.
+@app.get('/users/<int:user_id>/edit')
+def edit_user(user_id):
+    """Show the edit page for a user."""
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template('edit_user.html', user=user)
+
 
 # POST /users/[user-id]/edit
 # Process the edit form, returning the user to the /users page.
+
+app.post('/users/<int:user_id>/edit')
+
+
+def process_edit_form(user_id):
+    """Process the edit form, returning the user to the /users page."""
+
+    # if type is submit process edit
+
+    # else go back to users page
+
+
 # POST /users/[user-id]/delete
 # Delete the user.
