@@ -1,8 +1,13 @@
 """Models for Blogly."""
 
 from flask_sqlalchemy import SQLAlchemy
+from traitlets import default
 
 db = SQLAlchemy()
+
+# Default url for testing
+DEFAULT_IMAGE_URL = 'https://rithm-students-assets.s3.amazonaws.com/r27/exercises/flask-blogly/handout/_images/detail.png'
+
 
 def connect_db(app):
     """Connect to database."""
@@ -20,4 +25,4 @@ class User(db.Model):
                    autoincrement=True)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
-    image_url = db.Column(db.Text(), nullable=True)
+    image_url = db.Column(db.Text(), nullable=True, default=DEFAULT_IMAGE_URL)
