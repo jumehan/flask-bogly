@@ -1,3 +1,4 @@
+from email.mime import image
 from unittest import TestCase
 
 from app import app, db
@@ -52,15 +53,40 @@ class UserViewTestCase(TestCase):
         # rely on this user in our tests without needing to know the numeric
         # value of their id, since it will change each time our tests are run.
         self.user_id = test_user.id
+        self.user_id_two = second_user.id
 
     def tearDown(self):
         """Clean up any fouled transaction."""
         db.session.rollback()
 
     def test_list_users(self):
+        """Display user list, renders index.html correctly"""
         with self.client as c:
             resp = c.get("/users")
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
             self.assertIn("test_first", html)
             self.assertIn("test_last", html)
+
+    def test_user_details(self):
+        """Display user detail with edit and delete button"""
+        with self.client as c:
+            resp = c.get(f'/users/{self.user_id}')
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn("test_first", html)
+            self.assertIn("Delete", html)
+            self.assertIn("Edit", html)
+            self.assertNotIn("test_first_two", html)
+
+    def test_add_new_user(self):
+        """Adds new user to the database"""
+        with self.client as c:
+            resp = c.post('/users/new',
+            data = { 'first_name' : 'Joe', 'last_name': 'Rabbit', 'image_url' : ''},
+            follow_redirects = True)
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn("Rabbit", html)
+
+

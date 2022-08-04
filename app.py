@@ -53,7 +53,7 @@ def process_new_user():
     """Process the add form, adding a new user and going back to /users"""
     first_name = request.form['first_name']
     last_name = request.form['last_name']
-    image_url = request.form['image_url']
+    image_url = request.form['image_url'] or None
 
 #  validate inputs before submit
     user = User(first_name=first_name,

@@ -1,7 +1,6 @@
 """Models for Blogly."""
 
 from flask_sqlalchemy import SQLAlchemy
-from traitlets import default
 
 db = SQLAlchemy()
 
@@ -25,4 +24,4 @@ class User(db.Model):
                    autoincrement=True)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
-    image_url = db.Column(db.Text(), nullable=True, default=DEFAULT_IMAGE_URL)
+    image_url = db.Column(db.Text(), nullable=False, default=DEFAULT_IMAGE_URL)
