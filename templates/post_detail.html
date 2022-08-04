@@ -20,8 +20,8 @@
 
 <form>
   <a href="/users/{{post.user_id}}">Cancel</a>
-  <button formaction="/posts/{{post.id}}/edit" formmethod="get">Edit</button>
-  <button formaction="/posts/{{post.id}}/delete" formmethod="post">Delete</button>
+  <button class="btn btn-primary" formaction="/posts/{{post.id}}/edit" formmethod="get">Edit</button>
+  <button class="btn btn-danger" formaction="/posts/{{post.id}}/delete" formmethod="post">Delete</button>
 </form>
 
 {% endblock %}

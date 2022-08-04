@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask, request, redirect, render_template
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post, Tag, PostTag
 from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
@@ -159,13 +159,11 @@ def add_new_post(user_id):
 
 # GET /posts/[post-id]
 # Show a post.
-
-
 @app.get('/posts/<int:post_id>')
 def show_post(post_id):
     """Render show details for a post."""
 
-    post = Post.query.get(post_id)
+    post = Post.query.get_or_404(post_id)
 
     return render_template('/post_detail.html', post=post)
 
@@ -177,7 +175,7 @@ def show_post(post_id):
 def show_edit_post(post_id):
     """Render edit form to edit a post."""
 
-    post = Post.query.get(post_id)
+    post = Post.query.get_or_404(post_id)
 
     return render_template('/edit_post.html', post=post)
 
@@ -189,7 +187,7 @@ def show_edit_post(post_id):
 def edit_post(post_id):
     """Edit a post."""
 
-    post = Post.query.get(post_id)
+    post = Post.query.get_or_404(post_id)
 
     title = request.form["title"]
     content = request.form["content"]
@@ -209,7 +207,7 @@ def edit_post(post_id):
 def delete_post(post_id):
     """Delete a post."""
 
-    post = Post.query.get(post_id)
+    post = Post.query.get_or_404(post_id)
 
     db.session.delete(post)
     db.session.commit()

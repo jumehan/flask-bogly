@@ -9,8 +9,8 @@
 <img src="{{user.image_url}}" alt="">
 
 <form>
-  <button formaction="/users/{{user.id}}/edit" formmethod="get">Edit</button>
-  <button formaction="/users/{{user.id}}/delete" formmethod="post">Delete</button>
+  <button class="btn btn-primary" formaction="/users/{{user.id}}/edit" formmethod="get">Edit</button>
+  <button class="btn btn-danger" formaction="/users/{{user.id}}/delete" formmethod="post">Delete</button>
 </form>
 
 
@@ -24,7 +24,7 @@
 </ul>
 {% endif %}
 <form action="/users/{{user.id}}/posts/new" method="get">
-  <button type="submit">Add Post</button>
+  <button class="btn btn-primary" type="submit">Add Post</button>
 </form>
 
 {% endblock %}

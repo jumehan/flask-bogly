@@ -52,22 +52,10 @@ class UserViewTestCase(TestCase):
         self.user_id = test_user.id
         self.user_id_two = second_user.id
 
-        post_one = Post(
-            title="post one",
-            content="content of post one",
-            created_at=None,
-            user_id=self.user_id
-        )
-
-        db.session.add(post_one)
-        db.session.commit()
-
         # We can hold onto our test_user's id by attaching it to self (which is
         # accessible throughout this test class). This way, we'll be able to
         # rely on this user in our tests without needing to know the numeric
         # value of their id, since it will change each time our tests are run.
-
-        self.post_one_id = post_one.id
 
     def tearDown(self):
         """Clean up any fouled transaction."""
@@ -115,6 +103,53 @@ class UserViewTestCase(TestCase):
             self.assertNotIn("test_first", html)
             self.assertIn("test_two", html)
 
+
+class PostViewTestCase(TestCase):
+    """Test viewing, adding, editing, and deleting posts"""
+
+    def setUp(self):
+        """Create test client, add sample data."""
+
+        # As you add more models later in the exercise, you'll want to delete
+        # all of their records before each test just as we're doing with the
+        # User model below.
+        Post.query.delete()
+        User.query.delete()
+
+        self.client = app.test_client()
+
+        test_user = User(
+            first_name="test_first",
+            last_name="test_last",
+            image_url=None,
+        )
+
+        db.session.add_all([test_user])
+        db.session.commit()
+
+        self.user_id = test_user.id
+
+        post_one = Post(
+            title="post one",
+            content="content of post one",
+            created_at = None,
+            user_id=self.user_id
+        )
+
+        db.session.add(post_one)
+        db.session.commit()
+
+        # We can hold onto our test_user's id by attaching it to self (which is
+        # accessible throughout this test class). This way, we'll be able to
+        # rely on this user in our tests without needing to know the numeric
+        # value of their id, since it will change each time our tests are run.
+
+        self.post_one_id = post_one.id
+
+    def tearDown(self):
+        """Clean up any fouled transaction."""
+        db.session.rollback()
+
     def test_add_new_post(self):
         """"adds posts to the database"""
         with self.client as c:
@@ -127,6 +162,17 @@ class UserViewTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
             self.assertIn("Rabbit", html)
+
+    def test_view_post(self):
+        """"allows viewing a post from the database"""
+        with self.client as c:
+
+            resp = c.get(f'/posts/{self.post_one_id}')
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn("content of post one", html)
+            self.assertIn('post one', html)
+            self.assertIn("test_first", html)
 
     def test_delete_post(self):
         """deletes post"""
