@@ -1,4 +1,4 @@
-from email.mime import image
+
 from unittest import TestCase
 
 from app import app, db
@@ -40,7 +40,7 @@ class UserViewTestCase(TestCase):
         )
 
         second_user = User(
-            first_name="test_first_two",
+            first_name="test_two",
             last_name="test_last_two",
             image_url=None,
         )
@@ -83,10 +83,20 @@ class UserViewTestCase(TestCase):
         """Adds new user to the database"""
         with self.client as c:
             resp = c.post('/users/new',
-            data = { 'first_name' : 'Joe', 'last_name': 'Rabbit', 'image_url' : ''},
-            follow_redirects = True)
+                          data={'first_name': 'Joe',
+                                'last_name': 'Rabbit', 'image_url': ''},
+                          follow_redirects=True)
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
             self.assertIn("Rabbit", html)
 
-
+    def test_delete_user(self):
+        """Deletes user from database"""
+        with self.client as c:
+            resp = c.post(f'/users/{self.user_id}/delete',
+                          follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+            # breakpoint()
+            html = resp.get_data(as_text=True)
+            self.assertNotIn("test_first", html)
+            self.assertIn("test_two", html)

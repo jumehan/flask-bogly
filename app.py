@@ -45,7 +45,6 @@ def show_add_form():
     return render_template('new_user.html')
 
 # POST /users/new
-#
 
 
 @app.post('/users/new')
@@ -92,7 +91,6 @@ def edit_user(user_id):
 
 # POST /users/[user-id]/edit
 # Process the edit form, returning the user to the /users page.
-
 @app.post('/users/<int:user_id>/edit')
 def process_edit_form(user_id):
     """Process the edit form, returning the user to the /users page."""
@@ -105,8 +103,8 @@ def process_edit_form(user_id):
 
     #  validate inputs before submit
     user.first_name = first_name
-    user.last_name= last_name
-    user.image_url= image_url
+    user.last_name = last_name
+    user.image_url = image_url
 
     db.session.commit()
 
@@ -119,8 +117,8 @@ def delete_user(user_id):
 
     user = User.query.get_or_404(user_id)
 
-    user.query.delete()
+    # user.query.delete() incorrect
+    db.session.delete(user)
     db.session.commit()
 
     return redirect('/users')
-

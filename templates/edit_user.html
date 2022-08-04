@@ -8,13 +8,13 @@
 <form action="/users/{{user.id}}/edit" method="post">
 
   <label for="first_name">First Name</label>
-  <input type="text" name="first_name" placeholder="{{user.first_name}}">
+  <input type="text" name="first_name" value="{{user.first_name}}">
 
   <label for="last_name">Last Name</label>
-  <input type="text" name="last_name" placeholder="{{user.last_name}}">
+  <input type="text" name="last_name" value="{{user.last_name}}">
 
   <label for="image_url">Image URL</label>
-  <input type="url" name="image_url" placeholder="{{user.image_url}}">
+  <input type="url" name="image_url" value="{{user.image_url}}">
   <!-- style as button -->
   <a href="/users">Cancel</a>
   <button type="submit">Save</button>
