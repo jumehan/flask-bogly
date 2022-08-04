@@ -19,6 +19,8 @@ debug = DebugToolbarExtension(app)
 
 # GET /
 # Redirect to list of users. (We’ll fix this in a later step).
+
+
 @app.get('/')
 def redirect_to_users():
     """Redirect to list of users. """
@@ -139,6 +141,8 @@ def new_post(user_id):
 
 # POST /users/[user-id]/posts/new
 # Handle add form; add post and redirect to the user detail page.
+
+
 @app.post('/users/<int:user_id>/posts/new')
 def add_new_post(user_id):
     """Lets user add a new post including post title and content"""
@@ -155,6 +159,8 @@ def add_new_post(user_id):
 
 # GET /posts/[post-id]
 # Show a post.
+
+
 @app.get('/posts/<int:post_id>')
 def show_post(post_id):
     """Render show details for a post."""
@@ -165,6 +171,8 @@ def show_post(post_id):
 
 # GET /posts/[post-id]/edit
 # Show form to edit a post, and to cancel (back to user page).
+
+
 @app.get('/posts/<int:post_id>/edit')
 def show_edit_post(post_id):
     """Render edit form to edit a post."""
@@ -175,9 +183,11 @@ def show_edit_post(post_id):
 
 # POST /posts/[post-id]/edit
 # Handle editing of a post. Redirect back to the post view.
+
+
 @app.post('/posts/<int:post_id>/edit')
 def edit_post(post_id):
-    """Render edit form to edit a post."""
+    """Edit a post."""
 
     post = Post.query.get(post_id)
 
@@ -193,6 +203,8 @@ def edit_post(post_id):
 
 # POST /posts/[post-id]/delete
 # Delete the post.
+
+
 @app.post('/posts/<int:post_id>/delete')
 def delete_post(post_id):
     """Delete a post."""
