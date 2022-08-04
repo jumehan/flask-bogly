@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask, request, redirect, render_template
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
@@ -15,6 +15,7 @@ db.create_all()
 app.config['SECRET_KEY'] = "SECRET!"
 debug = DebugToolbarExtension(app)
 
+# BELOW ARE THE USER ROUTES
 
 # GET /
 # Redirect to list of users. (We’ll fix this in a later step).
@@ -122,3 +123,83 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect('/users')
+
+
+# BELOW ARE THE POST ROUTES
+
+# GET /users/[user-id]/posts/new
+# Show form to add a post for that user.
+@app.get('/users/<int:user_id>/posts/new')
+def new_post(user_id):
+    """Render create a new post form"""
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template('/new_post.html', user=user)
+
+# POST /users/[user-id]/posts/new
+# Handle add form; add post and redirect to the user detail page.
+@app.post('/users/<int:user_id>/posts/new')
+def add_new_post(user_id):
+    """Lets user add a new post including post title and content"""
+
+    title = request.form["title"]
+    content = request.form["content"]
+
+    post = Post(title=title, content=content, user_id=user_id)
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
+
+# GET /posts/[post-id]
+# Show a post.
+@app.get('/posts/<int:post_id>')
+def show_post(post_id):
+    """Render show details for a post."""
+
+    post = Post.query.get(post_id)
+
+    return render_template('/post_detail.html', post=post)
+
+# GET /posts/[post-id]/edit
+# Show form to edit a post, and to cancel (back to user page).
+@app.get('/posts/<int:post_id>/edit')
+def show_edit_post(post_id):
+    """Render edit form to edit a post."""
+
+    post = Post.query.get(post_id)
+
+    return render_template('/edit_post.html', post=post)
+
+# POST /posts/[post-id]/edit
+# Handle editing of a post. Redirect back to the post view.
+@app.post('/posts/<int:post_id>/edit')
+def edit_post(post_id):
+    """Render edit form to edit a post."""
+
+    post = Post.query.get(post_id)
+
+    title = request.form["title"]
+    content = request.form["content"]
+
+    post.title = title
+    post.content = content
+
+    db.session.commit()
+
+    return redirect(f"/posts/{post_id}")
+
+# POST /posts/[post-id]/delete
+# Delete the post.
+@app.post('/posts/<int:post_id>/delete')
+def delete_post(post_id):
+    """Delete a post."""
+
+    post = Post.query.get(post_id)
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f"/users/{post.user_id}")
