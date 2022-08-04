@@ -7,7 +7,7 @@ from sqlalchemy.sql import func
 db = SQLAlchemy()
 
 # Default url for testing
-DEFAULT_IMAGE_URL = 'https://rithm-students-assets.s3.amazonaws.com/r27/exercises/flask-blogly/handout/_images/detail.png'
+DEFAULT_IMAGE_URL = 'https://www.fwpgroup.co.uk/wp-content/uploads/2020/03/male-profile-icon-white-on-the-blue-background-vector-3451989-421x500.jpg'
 
 
 def connect_db(app):
@@ -33,6 +33,7 @@ class User(db.Model):
 
 class Post(db.Model):
     """Post"""
+
     __tablename__ = "posts"
 
     id = db.Column(db.Integer, primary_key=True,
