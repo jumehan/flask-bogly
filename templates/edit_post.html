@@ -20,7 +20,7 @@
 
       { % for tag in tags %}
 
-      <input type="checkbox" name="tag_name" {% if tag.post_id=post.id %} checked {%endif%}>
+      <input type="checkbox" name="tag_name">
       <label for="tag_name">{{tag.name}}</label>
       {% endfor %}
     </ul>

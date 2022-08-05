@@ -13,11 +13,11 @@
   <label for="content">Content</label>
   <input type="textarea" name="content">
 
-  {% if post.tags %}
+  {% if tags %}
   <div>
 
     <ul>
-      { % for tag in post.tags %}
+      { % for tag in tags %}
 
       <input type="checkbox" name="tag_name">
       <label for="tag_name">{{tag.name}}</label>

@@ -218,3 +218,35 @@ def delete_post(post_id):
 
 
 # BELOW ARE THE TAG ROUTES
+
+# GET /tags
+# Lists all tags, with links to the tag detail page.
+
+@app.get('/tags')
+def get_tags():
+    """Render list of tags."""
+
+    tags = Tag.query.all()
+
+    return render_template("tag_list.html", tags=tags)
+
+# GET /tags/[tag-id]
+# Show detail about a tag. Have links to edit form and to delete.
+@app.get('/tags/<int:tag_id>')
+def show_tag_details(tag_id):
+    """Show details for a tag."""
+
+    tags = Tag.query.get_or_404(tag_id)
+
+    return render_template("tag_posts.html", tags=tags)
+
+# GET /tags/new
+# Shows a form to add a new tag.
+# POST /tags/new
+# Process add form, adds tag, and redirect to tag list.
+# GET /tags/[tag-id]/edit
+# Show edit form for a tag.
+# POST /tags/[tag-id]/edit
+# Process edit form, edit tag, and redirects to the tags list.
+# POST /tags/[tag-id]/delete
+# Delete a tag.
