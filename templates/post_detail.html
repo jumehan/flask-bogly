@@ -17,7 +17,19 @@
     By {{ post.user.first_name }} {{ post.user.last_name }}
   </p>
 </div>
+{% if post.tags %}
+<div>
 
+  Tags:
+
+  <ul>
+    { % for tag in post.tags %}
+    <li> <a href="/tags/{{tag.id}}">{{tag.name}}</a></li>
+    {% endfor %}
+  </ul>
+
+</div>
+{% endif %}
 <form>
   <a href="/users/{{post.user_id}}">Cancel</a>
   <button class="btn btn-primary" formaction="/posts/{{post.id}}/edit" formmethod="get">Edit</button>

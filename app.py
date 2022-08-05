@@ -146,7 +146,7 @@ def new_post(user_id):
 @app.post('/users/<int:user_id>/posts/new')
 def add_new_post(user_id):
     """Lets user add a new post including post title and content"""
-
+# TODO: need to check for checked tags
     title = request.form["title"]
     content = request.form["content"]
 
@@ -159,6 +159,8 @@ def add_new_post(user_id):
 
 # GET /posts/[post-id]
 # Show a post.
+
+
 @app.get('/posts/<int:post_id>')
 def show_post(post_id):
     """Render show details for a post."""
@@ -213,3 +215,6 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(f"/users/{post.user_id}")
+
+
+# BELOW ARE THE TAG ROUTES
